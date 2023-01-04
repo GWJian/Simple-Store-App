@@ -69,7 +69,6 @@
                             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>" />
                             <input type="number" step="1" min="1" max="" name="quantity"
                                 value=<?php echo $product['quantity']; ?> title="Qty" class="input-text qty text">
-                            <?php echo $product['quantity']; ?>
                         </form>
                     </td>
                     <td><?php echo $product['total']; ?></td>
@@ -88,7 +87,7 @@
                 <?php endforeach; ?>
 
                 <?php if (empty($_SESSION['cart'])): ?>
-                <td><a>Your cart is empty.</a></td>
+                <td colspan="5">Your cart is empty.</td>
                 <?php endif; ?>
 
                 <?php if ( ! empty($_SESSION['cart'])):?>
@@ -97,7 +96,7 @@
                     <td>$<?php echo $cart->total(); ?></td>
                     <td></td>
                 </tr>
-                <?php endif; ?>
+                <?php endif; // end - empty( $cart->listAllProductsinCart() )?>
 
 
             </tbody>
@@ -105,7 +104,12 @@
 
         <div class="d-flex justify-content-between align-items-center my-3">
             <a href="/" class="btn btn-light btn-sm">Continue Shopping</a>
-            <button class="btn btn-primary">Checkout</a>
+            <!-- if there is product in cart, then only display the checkout button -->
+            <?php if ( !empty( $cart->listAllproductinCart() ) ) : ?>
+            <form method="POST" action="/checkout">
+                <button class="btn btn-primary">Checkout</a>
+            </form>
+            <?php endif; ?>
         </div>
 
     </div>

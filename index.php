@@ -25,6 +25,9 @@ switch( $path ) {
     case 'orders':
         require "pages/orders.php";
         break;
+    case 'checkout':
+        require "pages/checkout.php";
+        break;
     case 'logout':
         require "pages/logout.php";
         break;

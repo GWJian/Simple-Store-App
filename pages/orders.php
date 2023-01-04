@@ -1,10 +1,21 @@
 <?php 
 
-session_start();
-//load file then only start functions
-require "includes/functions.php";
+    session_start();
+    //load file then only start functions
+    require "includes/functions.php";
+    require "includes/class-orders.php";
 
-$database = connectToDB();
+    $orders = new ORDERS();
+
+    // make sure user already logged in
+    if ( !isLoggedIn() ) {
+        // if user not logged in, redirect to login page
+        header('Location: /login');
+        exit;
+    }
+    
+    $user_id = $_SESSION['user']['id'];
+
 ?>
 
 <!-- require the header part -->
@@ -28,28 +39,23 @@ $database = connectToDB();
                 </tr>
             </thead>
             <tbody>
+                <?php foreach( $orders->listOrders( $user_id ) as $order ) : ?>
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row"><?php echo $order['id']; ?></th>
                     <td>
                         <ul class="list-unstyled">
-                            <li>Product 1</li>
-                            <li>Product 2</li>
+                            <?php foreach($orders->listProductsinOrder( $order['id'] ) as $product ): ?>
+                            <li>
+                                <?php echo $product['name']; ?>
+                                [<?php echo $product['quantity']; ?>]
+                            </li>
+                            <?php endforeach; ?>
                         </ul>
                     </td>
-                    <td>$80</td>
-                    <td>Pending Payment</td>
+                    <td>$<?php echo $order['total_amount']; ?></td>
+                    <td><?php echo $order['status']; ?></td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>
-                        <ul class="list-unstyled">
-                            <li>Product 3</li>
-                            <li>Product 4</li>
-                        </ul>
-                    </td>
-                    <td>$60</td>
-                    <td>Completed</td>
-                </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
