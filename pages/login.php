@@ -1,12 +1,29 @@
 <?php 
 
 session_start();
+
+// !isset() = is not set
+// if $_SESSION['login_form_csrf_token'] is not set,
+// when token is already available,we won't regenerate it again
+if ( !isset( $_SESSION['login_form_csrf_token'] ) ) {
+    // generate csrf token
+    $_SESSION['login_form_csrf_token'] = bin2hex( random_bytes(32) );
+    }
+
+
 //load file then only start functions
 require "includes/functions.php";
 require "includes/class-authernitacion.php";
 
     // process the login form
     if ( $_SERVER["REQUEST_METHOD"] === 'POST' ) {
+
+      // verify the csrf token is correct or not
+
+      if ( $_POST['login_form_csrf_token'] !== $_SESSION['login_form_csrf_token'] )
+      {
+        die("Nice try! But I'm smarter than you!");
+      }
 
         $email = $_POST["email"];
         $password = $_POST["password"];
@@ -55,15 +72,17 @@ $database = connectToDB();
                             Login
                         </button>
                     </div>
+                    <input type="hidden" name="login_form_csrf_token"
+                        value="<?php echo $_SESSION['login_form_csrf_token']; ?>" />
                 </form>
             </div>
         </div>
 
         <!-- links -->
         <div class="d-flex justify-content-between align-items-center gap-3 mx-auto pt-3" style="max-width: 500px;">
-            <a href="index.php" class="text-decoration-none small"><i class="bi bi-arrow-left-circle"></i> Go
+            <a href="/" class="text-decoration-none small"><i class="bi bi-arrow-left-circle"></i> Go
                 back</a>
-            <a href="signup.php" class="text-decoration-none small">Don't have an account? Sign up here
+            <a href="/signup" class="text-decoration-none small">Don't have an account? Sign up here
                 <i class="bi bi-arrow-right-circle"></i></a>
         </div>
     </div>

@@ -54,7 +54,7 @@ $database = connectToDB();
         </table>
 
         <div class="d-flex justify-content-between align-items-center my-3">
-            <a href="index.php" class="btn btn-light btn-sm">Continue Shopping</a>
+            <a href="/" class="btn btn-light btn-sm">Continue Shopping</a>
         </div>
     </div>
 
