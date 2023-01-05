@@ -98,13 +98,33 @@ class ORDERS
     }
 
     /**
+     * Update order
+     */
+    public function updateOrder( $transaction_id, $status )
+    {
+        $statement = $this->database->prepare(
+            // update the order status using billplz id that stored as transaction_id in our database
+            'UPDATE orders SET status = :status WHERE transaction_id = :transaction_id'
+        );
+
+        $statement->execute([
+            'status' => $status,
+            'transaction_id' => $transaction_id
+        ]);
+    }
+
+    /**
      * List all the orders by the logged_in user
      */
 
      public function listOrders( $user_id )
      {
         //load the orders data based on the egiven user_id
-        $statement = $this->database->prepare('SELECT * FROM orders WHERE user_id = :user_id');
+        $statement = $this->database->prepare(
+            'SELECT * FROM orders 
+            WHERE user_id = :user_id 
+            ORDER BY id DESC'
+        );
         $statement->execute([
             'user_id' => $user_id
         ]);

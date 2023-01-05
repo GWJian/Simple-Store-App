@@ -35,6 +35,9 @@
                 $_SESSION['cart'] // $products_in_cart
             );
 
+            //empty cart
+            $cart->emptyCart();
+
             // make sure bill url is valid url
             if ( isset( $bill_url ) && !empty( $bill_url ) ) {
                 header( 'Location: ' . $bill_url );
