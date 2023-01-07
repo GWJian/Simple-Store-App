@@ -15,7 +15,7 @@ class ORDERS
     }
 
     public function createNewOrder( 
-        $user_id, //find tou who make the order
+        $user_id, //find who make the order
         $total_amount = 0, //find out what's the total amount
         $products_in_cart =[]//get the products in the order
         )
